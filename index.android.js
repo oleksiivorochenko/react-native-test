@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 import { DrawerNavigator, StackNavigator } from 'react-navigation';
 import {
-    ActivityIndicator,Alert, ListView,
-    StyleSheet,RefreshControl, TextInput,
-    AppRegistry,TouchableHighlight
-    ,Button, Text, View, Image,ScrollView
+    ActivityIndicator, Alert, ListView,
+    StyleSheet, RefreshControl, TextInput,
+    AppRegistry, TouchableHighlight, Button,
+    Text, View, Image, ScrollView
 } from 'react-native';
 
 const BASE_URL = 'https://api.instagram.com/v1';
-const ACCESS_TOKEN = 'token';
+const ACCESS_TOKEN = '812872018.6576db6.8ccc8164ba40458eac071bae8ff53676';
 
 function getMedia(tagName) {
     let tag = tagName != null && tagName != ' '? tagName : 'test';
@@ -215,7 +215,7 @@ class PhotoDetailsScreen extends React.Component {
     }
 }
 
-/*const AwesomeProject = StackNavigator({
+/*const ReactNativeTest = StackNavigator({
  Home: { screen: HomeScreen },
  About: { screen: AboutScreen },
  PhotoDetails: { screen: PhotoDetailsScreen },
@@ -223,7 +223,7 @@ class PhotoDetailsScreen extends React.Component {
  });*/
 
 
-const AwesomeProject = DrawerNavigator({
+const ReactNativeTest = DrawerNavigator({
     Home: { screen: HomeScreen},
     PhotoDetails: {screen: PhotoDetailsScreen},
     About: { screen: AboutScreen },
@@ -286,5 +286,5 @@ const styles = StyleSheet.create({
     },
 });
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('ReactNativeTest', () => ReactNativeTest);
 
