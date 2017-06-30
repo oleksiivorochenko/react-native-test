@@ -21,7 +21,6 @@ function getMedia(tagName) {
     })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log('qqqqqqqqqqqqqqqqqqqqqq', responseJson);
             return responseJson.data;
         })
         .catch((error) => {
@@ -31,7 +30,6 @@ function getMedia(tagName) {
 
 
 class HomeScreen extends React.Component {
-
     static navigationOptions = {
         drawerLabel: 'Home',
     };
@@ -46,11 +44,9 @@ class HomeScreen extends React.Component {
             likes:0,
             dataSource: this.getDs([])
         }
-
     }
 
     onLike = (id) => {
-        console.log("WWWWWWWWWWW" + id);
         this.setState({
             likes: this.state.likes + 1
         })
@@ -80,7 +76,6 @@ class HomeScreen extends React.Component {
             })
         })
     }
-
 
     render() {
         if (this.state.isLoading) {
@@ -154,7 +149,6 @@ class HomeScreen extends React.Component {
                       </View>
                   }
               />
-
             </View>
         );
     }
@@ -209,19 +203,10 @@ class PhotoDetailsScreen extends React.Component {
                     {2}
                 </Text>
               </View>
-
             </View>
         );
     }
 }
-
-/*const ReactNativeTest = StackNavigator({
- Home: { screen: HomeScreen },
- About: { screen: AboutScreen },
- PhotoDetails: { screen: PhotoDetailsScreen },
-
- });*/
-
 
 const ReactNativeTest = DrawerNavigator({
     Home: { screen: HomeScreen},
