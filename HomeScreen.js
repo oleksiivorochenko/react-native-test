@@ -111,7 +111,7 @@ export default class HomeScreen extends React.Component {
 
 
     fetchImages = (tagName) => {
-        getMedia(tagName).then((response) => {
+        return getMedia(tagName).then((response) => {
             console.log(response);
             this.setState({
                 isLoading: false,
