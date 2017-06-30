@@ -8,26 +8,7 @@ import {
     Text, View, Image, ScrollView
 } from 'react-native';
 
-const BASE_URL = 'https://api.instagram.com/v1';
-const ACCESS_TOKEN = '812872018.6576db6.8ccc8164ba40458eac071bae8ff53676';
-
-function getMedia(tagName) {
-    let tag = tagName != null && tagName != ' '? tagName : 'test';
-    let url = BASE_URL + '/tags/' + tag + '/media/recent?access_token=' + ACCESS_TOKEN;
-    return fetch(url,{
-        method: 'GET',
-        mode: 'no-cors',
-        credentials: 'include'
-    })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            return responseJson.data;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-}
-
+import { getMedia } from './InstagramPictureApi';
 
 class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -56,6 +37,7 @@ class HomeScreen extends React.Component {
 
         this.setState({refreshing: true});
         this.fetchImages(tagName);
+        //this.fetchImages(tagName).then(); // TODO
         this.setState({refreshing: false});
     }
 
@@ -195,12 +177,12 @@ class PhotoDetailsScreen extends React.Component {
                 </View>
               </TouchableHighlight>
               <View style={{flex: 1,flexDirection: 'row', alignItems: 'center',}}>
-                <View style={{width: 50, marginRight:5}}>
+                <View style={{width: 50, marginRight: 5, backgroundColor: 'blue'}}>
                   <Button title = 'Like'
-                          onPress={()=> {}}/>
+                          onPress={()=> {Alert.alert('Like!')}}/>
                 </View>
                 <Text >
-                    {2}
+                    {'Some text...2'}
                 </Text>
               </View>
             </View>
