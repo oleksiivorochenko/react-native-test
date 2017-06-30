@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Button, Text, View, TouchableHighlight, Image, ListView,
-    ActivityIndicator, TextInput, RefreshControl } from 'react-native';
+    ActivityIndicator, TextInput, RefreshControl, AsyncStorage } from 'react-native';
 
 import { getMedia } from './InstagramPictureApi';
 
@@ -19,23 +19,41 @@ export default class HomeScreen extends React.Component {
             isOpen: false,
             selectedItem: 'About',
             refreshing: false,
-            likes:0,
+            likes:{},
             dataSource: this.getDs([])
         }
     }
 
     onLike = (id) => {
+        let currentObject = this.state.likes;
+        let countLikes = currentObject[id] !== undefined
+            ? currentObject[id] + 1
+            : 1;
+        currentObject[id] = countLikes;
         this.setState({
-            likes: this.state.likes + 1
-        })
+            likes: currentObject
+        });
+
+        AsyncStorage.setItem('INSTA_LIKES', JSON.stringify(currentObject));
+        AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
+            console.log(result);
+        });
     }
 
-    _onRefresh(tagName) {
-
+    _onRefresh = (tagName)=> {
         this.setState({refreshing: true});
         this.fetchImages(tagName);
-        //this.fetchImages(tagName).then(); // TODO
         this.setState({refreshing: false});
+
+        AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
+            console.log('result', result);
+
+            this.setState({
+                likes: result
+            });
+
+        }).then(()=>{console.log('likes', this.state.likes);
+        });
     }
 
     getDs(data){
@@ -49,7 +67,6 @@ export default class HomeScreen extends React.Component {
 
     fetchImages =(tagName)=>{
         getMedia(tagName).then((response) => {
-            console.log(response);
             this.setState({
                 isLoading: false,
                 dataSource: this.getDs(response)
@@ -119,7 +136,7 @@ export default class HomeScreen extends React.Component {
                                             onPress={()=> {this.onLike(rowData.caption.id)}}/>
                                 </View>
                                 <Text >
-                                    {this.state.likes}
+                                    {this.state.likes[rowData.caption.id] }
                                 </Text>
                             </View>
 
