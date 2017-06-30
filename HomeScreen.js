@@ -22,37 +22,77 @@ export default class HomeScreen extends React.Component {
             likes:{},
             dataSource: this.getDs([])
         }
+
+        this.fetchLikes().then((response)=>{
+            console.log('pppppppppppppppppp', response);
+            this.setState({
+                likes: response || {}
+            })
+        })
     }
 
     onLike = (id) => {
-        let currentObject = this.state.likes;
-        let countLikes = currentObject[id] !== undefined
-            ? currentObject[id] + 1
-            : 1;
-        currentObject[id] = countLikes;
-        this.setState({
-            likes: currentObject
-        });
 
-        AsyncStorage.setItem('INSTA_LIKES', JSON.stringify(currentObject));
+        var currentObject = {};
+        /*const value = AsyncStorage.getItem('INSTA_LIKES').then((value) =>{
+         console.log('111rtrrrtrtrtrtrtrtr', value);
+         currentObject = value;
+         });*/
+        /*AsyncStorage.removeItem('INSTA_LIKES');*/
         AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-            console.log(result);
+
+            console.log('res1', result);
+            console.log('res2', this.state.likes);
+
+            if(result !== null){
+                currentObject = result
+            }else{
+                currentObject = this.state.likes;
+            }
+        }).then(()=> {
+            let countLikes = currentObject[id] !== undefined
+                ? currentObject[id] + 1
+                : 1;
+            currentObject[id] = countLikes;
+            this.setState({
+                likes: currentObject
+            });
+            console.log('res3', currentObject);
+
+            AsyncStorage.setItem('INSTA_LIKES', JSON.stringify(currentObject));
+            AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
+                console.log(result);
+            });
         });
+        /*if (value !== null){
+         // We have data!!
+         currentObject = value;
+         console.log('rtrrrtrtrtrtrtrtr', value);
+         }else{
+         currentObject = this.state.likes;
+         }*/
+
+
+        /* let currentObject = obj !== {}
+         ? obj
+         : this.state.likes;*/
+
+
     }
 
     _onRefresh = (tagName)=> {
         this.setState({refreshing: true});
-        this.fetchImages(tagName);
-        this.setState({refreshing: false});
+        console.log(tagName);
+        this.fetchImages(tagName).then(() => {
+            this.setState({refreshing: false});
 
-        AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-            console.log('result', result);
+            AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
+                console.log('result', result);
+                this.setState({
+                    likes: result
+                });
 
-            this.setState({
-                likes: result
-            });
-
-        }).then(()=>{console.log('likes', this.state.likes);
+            }).then(()=>{console.log('likes', this.state.likes)});
         });
     }
 
@@ -65,8 +105,14 @@ export default class HomeScreen extends React.Component {
         this.fetchImages()
     }
 
-    fetchImages =(tagName)=>{
+    fetchLikes =  async () => {
+        return await AsyncStorage.getItem('INSTA_LIKES');
+    }
+
+
+    fetchImages = (tagName) => {
         getMedia(tagName).then((response) => {
+            console.log(response);
             this.setState({
                 isLoading: false,
                 dataSource: this.getDs(response)
@@ -114,7 +160,7 @@ export default class HomeScreen extends React.Component {
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh.bind(this)}
+                            onRefresh={() => this._onRefresh.bind(this)}
                         />
                     }
                     renderRow={(rowData) =>
@@ -136,7 +182,7 @@ export default class HomeScreen extends React.Component {
                                             onPress={()=> {this.onLike(rowData.caption.id)}}/>
                                 </View>
                                 <Text >
-                                    {this.state.likes[rowData.caption.id] }
+                                    {this.state.likes[rowData.caption.id] || 0 }
                                 </Text>
                             </View>
 
