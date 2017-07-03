@@ -22,27 +22,12 @@ export default class HomeScreen extends React.Component {
             likes:{},
             dataSource: this.getDs([])
         }
-
-        this.fetchLikes().then((response)=>{
-            this.setState({
-                likes: response || {}
-            })
-        })
     }
 
     onLike = (id) => {
-
         var currentObject = {};
-        /*const value = AsyncStorage.getItem('INSTA_LIKES').then((value) =>{
 
-         currentObject = value;
-         });*/
-        /*AsyncStorage.removeItem('INSTA_LIKES');*/
         AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-
-            console.log('res1', JSON.parse(result));
-            console.log('res2', this.state.likes);
-
             if(result !== null){
                 currentObject = JSON.parse(result)
             }else{
@@ -56,41 +41,15 @@ export default class HomeScreen extends React.Component {
             this.setState({
                 likes: currentObject
             });
-
-
             AsyncStorage.setItem('INSTA_LIKES', JSON.stringify(currentObject));
 
         });
-        /*if (value !== null){
-         // We have data!!
-         currentObject = value;
-
-         }else{
-         currentObject = this.state.likes;
-         }*/
-
-
-        /* let currentObject = obj !== {}
-         ? obj
-         : this.state.likes;*/
-
-
     }
 
     _onRefresh = (tagName)=> {
         this.setState({refreshing: true});
-        console.log(tagName);
         this.fetchImages(tagName).then(() => {
             this.setState({refreshing: false});
-
-            AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-                console.log('resultFROMSTORAGE', result);
-                if(result !== null){
-                    this.setState({
-                        likes: JSON.parse(result)
-                    });
-                }
-            }).then(()=>{console.log('likes', this.state.likes)});
         });
     }
 
@@ -100,13 +59,20 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchImages()
+        this.fetchImages();
+        this.fetchLikes();
     }
 
-    fetchLikes =  async () => {
-        return await AsyncStorage.getItem('INSTA_LIKES');
+    fetchLikes = () => {
+        AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
+            console.log('resultFROMSTORAGE', result);
+            if(result !== null){
+                this.setState({
+                    likes: JSON.parse(result)
+                });
+            }
+        });
     }
-
 
     fetchImages = (tagName) => {
         return getMedia(tagName).then((response) => {
