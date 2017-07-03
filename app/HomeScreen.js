@@ -24,7 +24,6 @@ export default class HomeScreen extends React.Component {
         }
 
         this.fetchLikes().then((response)=>{
-            console.log('pppppppppppppppppp', response);
             this.setState({
                 likes: response || {}
             })
@@ -35,17 +34,17 @@ export default class HomeScreen extends React.Component {
 
         var currentObject = {};
         /*const value = AsyncStorage.getItem('INSTA_LIKES').then((value) =>{
-         console.log('111rtrrrtrtrtrtrtrtr', value);
+
          currentObject = value;
          });*/
         /*AsyncStorage.removeItem('INSTA_LIKES');*/
         AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
 
-            console.log('res1', result);
+            console.log('res1', JSON.parse(result));
             console.log('res2', this.state.likes);
 
             if(result !== null){
-                currentObject = result
+                currentObject = JSON.parse(result)
             }else{
                 currentObject = this.state.likes;
             }
@@ -57,17 +56,15 @@ export default class HomeScreen extends React.Component {
             this.setState({
                 likes: currentObject
             });
-            console.log('res3', currentObject);
+
 
             AsyncStorage.setItem('INSTA_LIKES', JSON.stringify(currentObject));
-            AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-                console.log(result);
-            });
+
         });
         /*if (value !== null){
          // We have data!!
          currentObject = value;
-         console.log('rtrrrtrtrtrtrtrtr', value);
+
          }else{
          currentObject = this.state.likes;
          }*/
@@ -87,11 +84,12 @@ export default class HomeScreen extends React.Component {
             this.setState({refreshing: false});
 
             AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-                console.log('result', result);
-                this.setState({
-                    likes: result
-                });
-
+                console.log('resultFROMSTORAGE', result);
+                if(result !== null){
+                    this.setState({
+                        likes: JSON.parse(result)
+                    });
+                }
             }).then(()=>{console.log('likes', this.state.likes)});
         });
     }
@@ -112,7 +110,7 @@ export default class HomeScreen extends React.Component {
 
     fetchImages = (tagName) => {
         return getMedia(tagName).then((response) => {
-            console.log(response);
+
             this.setState({
                 isLoading: false,
                 dataSource: this.getDs(response)
