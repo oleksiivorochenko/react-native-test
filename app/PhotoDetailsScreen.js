@@ -11,11 +11,11 @@ export default class PhotoDetailsScreen extends React.Component {
         const { params } = this.props.navigation.state;
         return (
             <View>
-                <Button
+                {/*<Button
                     onPress={() => this.props.navigation.goBack()}
                     title="Go back home"
-                />
-                <TouchableHighlight onPress={() => { Alert.alert('You tapped on photo')}}>
+                />*/}
+                <TouchableHighlight onPress={() => { alert('You tapped on photo')}}>
                     <View>
                         <Image
                             source={{uri:params.url}}
@@ -28,7 +28,7 @@ export default class PhotoDetailsScreen extends React.Component {
                 <View style={{flex: 1,flexDirection: 'row', alignItems: 'center',}}>
                     <View style={{width: 50, marginRight: 5, backgroundColor: 'blue'}}>
                         <Button title = 'Like'
-                                onPress={()=> {Alert.alert('Like!')}}/>
+                                onPress={()=> {alert('Like!')}}/>
                     </View>
                     <Text >
                         {'Some text...2'}
