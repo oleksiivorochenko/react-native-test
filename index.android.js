@@ -1,14 +1,4 @@
-import { DrawerNavigator } from 'react-navigation';
-import { AppRegistry } from 'react-native';
-
-import AboutScreen from './AboutScreen';
-import PhotoDetailsScreen from './PhotoDetailsScreen';
-import HomeScreen from './HomeScreen';
-
-const ReactNativeTest = DrawerNavigator({
-    Home: { screen: HomeScreen},
-    PhotoDetails: {screen: PhotoDetailsScreen},
-    About: { screen: AboutScreen },
-});
+import React, { AppRegistry } from 'react-native';
+import ReactNativeTest from './app/index';
 
 AppRegistry.registerComponent('ReactNativeTest', () => ReactNativeTest);

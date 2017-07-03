@@ -5,7 +5,7 @@ import { Button, Text, View, TouchableHighlight, Image, ListView,
 
 import { getMedia } from './InstagramPictureApi';
 
-import styles from './Styles'
+import styles from '../styles/Styles'
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Text, View, TouchableHighlight, Image } from 'react-native';
 
-import styles from './Styles';
+import styles from '../styles/Styles';
 
 export default class PhotoDetailsScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({

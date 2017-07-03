@@ -1,4 +1,5 @@
-INSTA = require('./InstagramConstants');
+
+import INSTA from './InstagramConstants'
 
 export function getMedia(tagName) {
     let tag = tagName != null && tagName != ' '? tagName : 'test';
