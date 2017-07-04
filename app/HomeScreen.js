@@ -4,7 +4,7 @@ import { Button, Text, View, TouchableHighlight, Image, ListView,
     ActivityIndicator, TextInput, RefreshControl, AsyncStorage } from 'react-native';
 
 import { getMedia } from './InstagramPictureApi';
-import { fetchLikes } from '../services/likeService';
+import { fetchLikes } from './services/likeService';
 
 import styles from '../styles/Styles';
 
