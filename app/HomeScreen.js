@@ -119,31 +119,18 @@ export default class HomeScreen extends React.Component {
 
     componentDidMount() {
         this.fetchImages().then((response)=> {
-
-                this.setState({
-                    isLoading: false,
-                    dataSource: this.getDs(response)
-                })
-            console.log('ggggg', response);
-let test = fetchLikes();
-test.then((res)=>{
-    console.log('PROMISE RESOLV', res);
-})
-console.log('test fetdsh likes',test)
             this.setState({
-                likes: test
+                isLoading: false,
+                dataSource: this.getDs(response)
             });
-            /*fetchLikes().then((response) =>{
-                console.log('TESTRESP', response);
-                  this.setState({
-                      likes: response
-                  });
-            });*/
+
+            fetchLikes().then((likes)=>{
+                    this.setState({
+                        likes: likes
+                    });
+                });
         });
-
     }
-
-
 
     fetchImages = (tagName) => {
         return getMedia(tagName);
