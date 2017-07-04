@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
 
+import  {DrawerNavigator}  from 'react-navigation';
+
 import { Button, Text, View, TouchableHighlight, Image, ListView,
-    ActivityIndicator, TextInput, RefreshControl, AsyncStorage } from 'react-native';
+    ActivityIndicator, TextInput, RefreshControl, AsyncStorage, Alert } from 'react-native';
 
 import { getMedia } from './InstagramPictureApi';
 
+import MenuScreen from './MenuScreen';
+
 import styles from '../styles/Styles';
+
+/*import * as firebase from 'firebase';
+
+firebase.initializeApp({
+    apiKey: "yourkeyhere",
+    authDomain: "projName-d0c3e.firebaseapp.com",
+    databaseURL: "https://projName-d0c3e.firebaseio.com",
+    storageBucket: "projName-d0c3e.appspot.com"
+});*/
+
+var Firebase = require('firebase');
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
-        drawerLabel: 'Home',
+        //drawerLabel: 'Home',
+        title: `Home`
     };
     constructor(props) {
         super(props);
@@ -99,7 +115,7 @@ export default class HomeScreen extends React.Component {
 
                 <View style={styles.searchSection}>
                     <TouchableHighlight
-                        onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+                        onPress={() => navigate('Menu')}>
                         <Image
                             source={{uri:'https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png'}}
                             style={styles.icon}
@@ -130,7 +146,7 @@ export default class HomeScreen extends React.Component {
                     }
                     renderRow={(rowData) =>
                         <View>
-                            <View style={{flex: 1,flexDirection: 'row', alignItems: 'center',}}>
+                            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',}}>
                                 <TouchableHighlight
                                     onPress={() => navigate('PhotoDetails', {
                                         id: rowData.caption.id,

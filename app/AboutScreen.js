@@ -10,11 +10,11 @@ export default class AboutScreen extends React.Component {
     render() {
         return (
             <View>
-                <Text>About app...</Text>
-                <Button
+                <Text style={{padding: 10}}>This is the best ever app!</Text>
+                {/*<Button
                     onPress={() => this.props.navigation.goBack()}
                     title="Go back home"
-                />
+                />*/}
             </View>
         );
     }
