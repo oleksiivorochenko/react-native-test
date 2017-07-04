@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Text, View, TouchableHighlight, Image } from 'react-native';
+import { Button, Text, View, TouchableHighlight, Image, Alert } from 'react-native';
 
 import styles from '../styles/Styles';
 
@@ -15,7 +15,7 @@ export default class PhotoDetailsScreen extends React.Component {
                     onPress={() => this.props.navigation.goBack()}
                     title="Go back home"
                 />*/}
-                <TouchableHighlight onPress={() => { alert('You tapped on photo')}}>
+                <TouchableHighlight onPress={() => { Alert.alert('You tapped on photo')}}>
                     <View>
                         <Image
                             source={{uri:params.url}}
@@ -25,15 +25,19 @@ export default class PhotoDetailsScreen extends React.Component {
                         <Text>{'Tag:' + params.tag}</Text>
                     </View>
                 </TouchableHighlight>
-                <View style={{flex: 1,flexDirection: 'row', alignItems: 'center',}}>
-                    <View style={{width: 50, marginRight: 5, backgroundColor: 'blue'}}>
+
+                <View style={{flex: 1,flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
+                    <View style={{width: 50, height: 50, marginRight: 5}}>
                         <Button title = 'Like'
-                                onPress={()=> {alert('Like!')}}/>
+                                onPress={()=> {
+                                    Alert.alert('Like!');
+                                    /*this.onLike(params.id)*/}}/>
                     </View>
-                    <Text >
-                        {'Some text...2'}
+                    <Text style={{paddingBottom: 15}}>
+                        { 4 }
                     </Text>
                 </View>
+
             </View>
         );
     }

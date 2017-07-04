@@ -5,7 +5,7 @@ import { Button, Text, View, TouchableHighlight, Image, ListView,
 
 import { getMedia } from './InstagramPictureApi';
 
-import styles from '../styles/Styles'
+import styles from '../styles/Styles';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -29,7 +29,8 @@ export default class HomeScreen extends React.Component {
 
         AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
             if(result !== null){
-                currentObject = JSON.parse(result)
+                currentObject = JSON.parse(result);
+                console.log(result);
             }else{
                 currentObject = this.state.likes;
             }
