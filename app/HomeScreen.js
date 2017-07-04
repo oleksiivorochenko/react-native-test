@@ -4,6 +4,7 @@ import { Button, Text, View, TouchableHighlight, Image, ListView,
     ActivityIndicator, TextInput, RefreshControl, AsyncStorage } from 'react-native';
 
 import { getMedia } from './InstagramPictureApi';
+import { fetchLikes } from '../services/likeService';
 
 import styles from '../styles/Styles';
 
@@ -25,9 +26,58 @@ export default class HomeScreen extends React.Component {
     }
 
     onLike = (id) => {
-        var currentObject = {};
+        /*var currentObject = {};*/
+    let newLike = 1;
+/*        AsyncStorage.removeItem('INSTA_LIKES');*/
+        console.log('id',id);
+        AsyncStorage.getAllKeys((err , keys) => {
+            console.log('werwerwerwe', keys);
 
-        AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
+            AsyncStorage.multiGet(keys, (err, stores) => {
+                console.log('stores',stores);
+
+                if(keys.indexOf(id) !== -1){
+
+
+                    AsyncStorage.getItem(id, (err, result ) =>{
+                        console.log('COUNT', result);
+                        newLike = ++result || 1;
+                        AsyncStorage.setItem(id, newLike.toString()).then(()=>{
+                            this.toggleLikes(id, newLike);
+                        });
+                        });
+
+                    console.log('COUNT', newLike);
+
+
+                }else{
+                    console.log('ff',stores);
+                    AsyncStorage.setItem(id, '1').then(()=>{
+                        this.toggleLikes(id, newLike);
+                    });
+                }
+
+
+
+
+            })/*.then(newLike,()=>{
+
+            });*/
+        });
+
+        /*.then((keys)=>{
+            AsyncStorage.multiGet(keys, (err, stores) => {
+
+                /!*stores.map((result, i , store) => {
+
+                 })*!/
+            }).then((stores)=>{
+                return stores;
+            })
+        })*/
+
+
+        /*AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
             if(result !== null){
                 currentObject = JSON.parse(result);
                 console.log(result);
@@ -44,9 +94,17 @@ export default class HomeScreen extends React.Component {
             });
             AsyncStorage.setItem('INSTA_LIKES', JSON.stringify(currentObject));
 
-        });
+        });*/
     }
 
+    toggleLikes = (photoId, countLikes)=>{
+        console.log('setlikes!!!!');
+        let likes = this.state.likes;
+        likes[photoId] = countLikes;
+        this.setState({
+            likes: likes
+        });
+    }
     _onRefresh = (tagName)=> {
         this.setState({refreshing: true});
         this.fetchImages(tagName).then(() => {
@@ -60,29 +118,35 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchImages();
-        this.fetchLikes();
+        this.fetchImages().then((response)=> {
+
+                this.setState({
+                    isLoading: false,
+                    dataSource: this.getDs(response)
+                })
+            console.log('ggggg', response);
+let test = fetchLikes();
+test.then((res)=>{
+    console.log('PROMISE RESOLV', res);
+})
+console.log('test fetdsh likes',test)
+            this.setState({
+                likes: test
+            });
+            /*fetchLikes().then((response) =>{
+                console.log('TESTRESP', response);
+                  this.setState({
+                      likes: response
+                  });
+            });*/
+        });
+
     }
 
-    fetchLikes = () => {
-        AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-            console.log('resultFROMSTORAGE', result);
-            if(result !== null){
-                this.setState({
-                    likes: JSON.parse(result)
-                });
-            }
-        });
-    }
+
 
     fetchImages = (tagName) => {
-        return getMedia(tagName).then((response) => {
-
-            this.setState({
-                isLoading: false,
-                dataSource: this.getDs(response)
-            })
-        })
+        return getMedia(tagName);
     }
 
     render() {
