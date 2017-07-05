@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Text, View, TouchableHighlight, Image, Alert } from 'react-native';
+import { Text, View, TouchableHighlight, Image, Alert } from 'react-native';
+import { onLike } from './services/likeService';
+import Like from './components/like.custom';
 
 import styles from '../styles/Styles';
 
@@ -7,8 +9,23 @@ export default class PhotoDetailsScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
         title: `Photo Details`
     });
+
+    constructor(props) {
+        super(props);
+
+        this.state = {}
+    }
+
+    componentDidMount() {
+        let { params } = this.props.navigation.state;
+        this.setState({
+            id: params.id,
+            uri:params.url,
+            tag: params.tag,
+            likes: params.likes
+        })
+    }
     render() {
-        const { params } = this.props.navigation.state;
         return (
             <View>
                 {/*<Button
@@ -18,26 +35,21 @@ export default class PhotoDetailsScreen extends React.Component {
                 <TouchableHighlight onPress={() => { Alert.alert('You tapped on photo')}}>
                     <View>
                         <Image
-                            source={{uri:params.url}}
+                            source={{uri:this.state.uri}}
                             style={{width: 420, height: 420}}/>
-                        <Text>{'ID:' + params.id}</Text>
-                        <Text>{'Photo Url:' + params.url}</Text>
-                        <Text>{'Tag:' + params.tag}</Text>
+                        <Text>{'ID:' + this.state.id}</Text>
+                        <Text>{'Photo Url:' + this.state.url}</Text>
+                        <Text>{'Tag:' + this.state.tag}</Text>
                     </View>
                 </TouchableHighlight>
-
-                <View style={{flex: 1,flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
-                    <View style={{width: 50, height: 50, marginRight: 5}}>
-                        <Button title = 'Like'
-                                onPress={()=> {
-                                    Alert.alert('Like!');
-                                    /*this.onLike(params.id)*/}}/>
-                    </View>
-                    <Text style={{paddingBottom: 15}}>
-                        { 4 }
-                    </Text>
-                </View>
-
+                <Like
+                    onPress={()=> {onLike(this.state.id).then((newLikes)=>{
+                        this.setState({
+                            likes: newLikes
+                        })
+                    })}}
+                    likes={this.state.likes + '' || '0'}
+                />
             </View>
         );
     }

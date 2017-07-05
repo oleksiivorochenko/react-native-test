@@ -5,8 +5,14 @@ import  {DrawerNavigator}  from 'react-navigation';
 import { Button, Text, View, TouchableHighlight, Image, ListView,
     ActivityIndicator, TextInput, RefreshControl, AsyncStorage, Alert } from 'react-native';
 
+/*import Button from 'react-native-button';*/
+import Like from './components/like.custom';
+
+
 import { getMedia } from './InstagramPictureApi';
-import { fetchLikes } from './services/likeService';
+import { fetchLikes, onLike } from './services/likeService';
+
+import CustomText from './components/like.custom';
 
 import MenuScreen from './MenuScreen';
 
@@ -21,7 +27,7 @@ firebase.initializeApp({
     storageBucket: "projName-d0c3e.appspot.com"
 });*/
 
-var Firebase = require('firebase');
+/*var Firebase = require('firebase');*/
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -41,86 +47,14 @@ export default class HomeScreen extends React.Component {
         }
     }
 
-    onLike = (id) => {
-        /*var currentObject = {};*/
-    let newLike = 1;
-/*        AsyncStorage.removeItem('INSTA_LIKES');*/
-        console.log('id',id);
-        AsyncStorage.getAllKeys((err , keys) => {
-            console.log('werwerwerwe', keys);
-
-            AsyncStorage.multiGet(keys, (err, stores) => {
-                console.log('stores',stores);
-
-                if(keys.indexOf(id) !== -1){
-
-
-                    AsyncStorage.getItem(id, (err, result ) =>{
-                        console.log('COUNT', result);
-                        newLike = ++result || 1;
-                        AsyncStorage.setItem(id, newLike.toString()).then(()=>{
-                            this.toggleLikes(id, newLike);
-                        });
-                        });
-
-                    console.log('COUNT', newLike);
-
-
-                }else{
-                    console.log('ff',stores);
-                    AsyncStorage.setItem(id, '1').then(()=>{
-                        this.toggleLikes(id, newLike);
-                    });
-                }
-
-
-
-
-            })/*.then(newLike,()=>{
-
-            });*/
-        });
-
-        /*.then((keys)=>{
-            AsyncStorage.multiGet(keys, (err, stores) => {
-
-                /!*stores.map((result, i , store) => {
-
-                 })*!/
-            }).then((stores)=>{
-                return stores;
-            })
-        })*/
-
-
-        /*AsyncStorage.getItem('INSTA_LIKES', (err, result) => {
-            if(result !== null){
-                currentObject = JSON.parse(result);
-                console.log(result);
-            }else{
-                currentObject = this.state.likes;
-            }
-        }).then(()=> {
-            let countLikes = currentObject[id] !== undefined
-                ? currentObject[id] + 1
-                : 1;
-            currentObject[id] = countLikes;
-            this.setState({
-                likes: currentObject
-            });
-            AsyncStorage.setItem('INSTA_LIKES', JSON.stringify(currentObject));
-
-        });*/
-    }
-
     toggleLikes = (photoId, countLikes)=>{
-        console.log('setlikes!!!!');
         let likes = this.state.likes;
         likes[photoId] = countLikes;
         this.setState({
             likes: likes
         });
     }
+
     _onRefresh = (tagName)=> {
         this.setState({refreshing: true});
         this.fetchImages(tagName).then(() => {
@@ -185,6 +119,7 @@ export default class HomeScreen extends React.Component {
                         title="Search"
                     />
 
+
                 </View>
                 <ListView
                     dataSource = {this.state.dataSource}
@@ -202,23 +137,20 @@ export default class HomeScreen extends React.Component {
                                     onPress={() => navigate('PhotoDetails', {
                                         id: rowData.caption.id,
                                         tag: rowData.caption.text,
-                                        url: rowData.images.standard_resolution.url
+                                        url: rowData.images.standard_resolution.url,
+                                        likes: this.state.likes[rowData.caption.id] || 0
                                     })}>
                                     <Image
                                         source={{uri:rowData.images.standard_resolution.url}}
                                         style={{width: 320, height: 320}}/>
                                 </TouchableHighlight>
-
-                                <View style={{width: 50, marginRight:5}}>
-                                    <Button title = 'Like'
-                                            onPress={()=> {this.onLike(rowData.caption.id)}}/>
-                                </View>
-                                <Text >
-                                    {this.state.likes[rowData.caption.id] || 0 }
-                                </Text>
+                                    <Like
+                                        onPress={()=> {onLike(rowData.caption.id).then((newLikes)=>{
+                                            this.toggleLikes(rowData.caption.id, newLikes);
+                                        })}}
+                                       likes={this.state.likes[rowData.caption.id] + '' || '0'}
+                                    />
                             </View>
-
-
                             <Text>{rowData.caption.id}</Text>
                             <Text>{rowData.caption.text}</Text>
                         </View>
