@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-
+import firebaseApp from './Global';
 import  {DrawerNavigator}  from 'react-navigation';
 
+
+
 import { Button, Text, View, TouchableHighlight, Image, ListView,
-    ActivityIndicator, TextInput, RefreshControl, AsyncStorage, Alert } from 'react-native';
+    ActivityIndicator, TextInput, RefreshControl,  AsyncStorage, Alert } from 'react-native';
 
 /*import Button from 'react-native-button';*/
 import Like from './components/like.custom';
@@ -12,27 +14,15 @@ import Like from './components/like.custom';
 import { getMedia } from './InstagramPictureApi';
 import { fetchLikes, onLike } from './services/likeService';
 
-import CustomText from './components/like.custom';
-
 import MenuScreen from './MenuScreen';
 
 import styles from '../styles/Styles';
-
-/*import * as firebase from 'firebase';
-
-firebase.initializeApp({
-    apiKey: "yourkeyhere",
-    authDomain: "projName-d0c3e.firebaseapp.com",
-    databaseURL: "https://projName-d0c3e.firebaseio.com",
-    storageBucket: "projName-d0c3e.appspot.com"
-});*/
-
-/*var Firebase = require('firebase');*/
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         //drawerLabel: 'Home',
         title: `Home`
+
     };
     constructor(props) {
         super(props);
@@ -45,6 +35,29 @@ export default class HomeScreen extends React.Component {
             likes:{},
             dataSource: this.getDs([])
         }
+
+
+    }
+
+    setLike =(userId, like)=> {
+
+        let path = "/photo/" + userId + "/like";
+
+        return firebaseApp.database().ref(path).set({
+            like: like
+        })
+
+    }
+
+    listenUserMobile=(userId, callback) => {
+        let path = "/photo/" + userId + "/like";
+        firebaseApp.database().ref(path).on('value', (snapshot) => {
+            var like = "";
+            if (snapshot.val()) {
+                like = snapshot.val().like
+            }
+            callback(like)
+        });
     }
 
     toggleLikes = (photoId, countLikes)=>{
@@ -66,6 +79,11 @@ export default class HomeScreen extends React.Component {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return ds.cloneWithRows(data);
     }
+
+   /* alerts = (this.listenUserMobile('3333', (like)=>{
+        Alert.alert(like);
+    }));*/
+
 
     componentDidMount() {
         this.fetchImages().then((response)=> {
@@ -138,7 +156,8 @@ export default class HomeScreen extends React.Component {
                                         id: rowData.caption.id,
                                         tag: rowData.caption.text,
                                         url: rowData.images.standard_resolution.url,
-                                        likes: this.state.likes[rowData.caption.id] || 0
+                                        likes: this.state.likes[rowData.caption.id] || 0,
+                                        callback: (likes)=>{this.toggleLikes(rowData.caption.id,likes)}
                                     })}>
                                     <Image
                                         source={{uri:rowData.images.standard_resolution.url}}
@@ -146,6 +165,7 @@ export default class HomeScreen extends React.Component {
                                 </TouchableHighlight>
                                     <Like
                                         onPress={()=> {onLike(rowData.caption.id).then((newLikes)=>{
+                                            /*this.setLike('3333', newLikes.toString());*/
                                             this.toggleLikes(rowData.caption.id, newLikes);
                                         })}}
                                        likes={this.state.likes[rowData.caption.id] + '' || '0'}
@@ -160,3 +180,4 @@ export default class HomeScreen extends React.Component {
         );
     }
 }
+

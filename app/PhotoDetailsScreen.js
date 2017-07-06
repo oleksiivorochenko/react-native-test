@@ -22,10 +22,12 @@ export default class PhotoDetailsScreen extends React.Component {
             id: params.id,
             uri:params.url,
             tag: params.tag,
-            likes: params.likes
+            likes: params.likes,
+            callback: (likes)=>{params.callback(likes)}
         })
     }
     render() {
+        const { navigate } = this.props.navigation;
         return (
             <View>
                 {/*<Button
@@ -44,6 +46,7 @@ export default class PhotoDetailsScreen extends React.Component {
                 </TouchableHighlight>
                 <Like
                     onPress={()=> {onLike(this.state.id).then((newLikes)=>{
+                        this.state.callback(newLikes);
                         this.setState({
                             likes: newLikes
                         })

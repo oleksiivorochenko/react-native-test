@@ -12,5 +12,6 @@ export default ReactNativeTest = StackNavigator({
     Home: { screen: HomeScreen },
     PhotoDetails: { screen: PhotoDetailsScreen },
     About: { screen: AboutScreen },
-    Menu: { screen: MenuScreen }
+    Menu: { screen: MenuScreen },
+
 });
