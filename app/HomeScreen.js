@@ -10,26 +10,49 @@ import { fetchLikes } from './services/likeService';
 
 import MenuScreen from './MenuScreen';
 
+import NavigationBar from 'react-native-navigation-bar';
+
 import styles from '../styles/Styles';
-
-/*import * as firebase from 'firebase';
-
-firebase.initializeApp({
-    apiKey: "yourkeyhere",
-    authDomain: "projName-d0c3e.firebaseapp.com",
-    databaseURL: "https://projName-d0c3e.firebaseio.com",
-    storageBucket: "projName-d0c3e.appspot.com"
-});*/
-
-var Firebase = require('firebase');
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         //drawerLabel: 'Home',
-        title: `Home`
+        title: `Home`,
+        /*headerRight: <Button
+            title='Menu'
+            onPress={() => alert('Pressed!')}
+            //onPress={() => this.props.navigation.navigate('Menu')}
+            //color='orange'
+        />,*/
+
+    /*    header: ({ state }) => ({
+            right: (
+                <TouchableHighlight
+                    onPress={state.params.onRightPressed}>
+                    <Image
+                        source={{uri:'https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png'}}
+                        style={styles.icon}
+                    />
+                </TouchableHighlight>
+            ),
+        }),*/
+
+        headerRight: <TouchableHighlight
+            /*onPress={state.params.onRightPressed}>*/
+            /*onPress={navigation('Menu')}>*/
+            /*onPress={() => this.props.navigation.navigate('Menu')}>*/
+            onPress={() => alert('Pressed!')}>
+            <Image
+                source={{uri:'https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png'}}
+                style={styles.icon}
+            />
+        </TouchableHighlight>
     };
+
     constructor(props) {
         super(props);
+        //var navigator = this.props.navigator;
+        //navigator._onLeftNavButtonPressed = this.onRightPressed.bind(this)
 
         this.state = {
             isLoading: true,
@@ -40,6 +63,12 @@ export default class HomeScreen extends React.Component {
             dataSource: this.getDs([])
         }
     }
+
+    _onRightPressed() {
+        //console.log('Pressed left button')
+        alert('Button pressed!');
+    }
+
 
     onLike = (id) => {
         /*var currentObject = {};*/
@@ -146,6 +175,10 @@ export default class HomeScreen extends React.Component {
                     });
                 });
         });
+
+        this.props.navigation.setParams({
+            onRightPressed: this._onRightPressed.bind(this)
+        });
     }
 
     fetchImages = (tagName) => {
@@ -160,6 +193,7 @@ export default class HomeScreen extends React.Component {
                 </View>
             );
         }
+
         const { navigate } = this.props.navigation;
         return (
             <View style={{ paddingTop: 20}}>
@@ -167,6 +201,7 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.searchSection}>
                     <TouchableHighlight
                         onPress={() => navigate('Menu')}>
+                        {/*onPress={() => this.props.navigation.navigate('DrawerOpen')}>*/}
                         <Image
                             source={{uri:'https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png'}}
                             style={styles.icon}
