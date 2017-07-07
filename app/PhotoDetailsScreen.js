@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
 import { Button, Text, View, TouchableHighlight, Image, Alert } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 import styles from '../styles/Styles';
 
 export default class PhotoDetailsScreen extends React.Component {
-    static navigationOptions = ({navigation}) => ({
-        title: `Photo Details`
-    });
+
     render() {
-        const { params } = this.props.navigation.state;
+
         return (
             <View>
-                {/*<Button
-                    onPress={() => this.props.navigation.goBack()}
-                    title="Go back home"
-                />*/}
                 <TouchableHighlight onPress={() => { Alert.alert('You tapped on photo')}}>
                     <View>
                         <Image
-                            source={{uri:params.url}}
+                            source={{uri: this.props.url /*params.url*/ }}
                             style={{width: 420, height: 420}}/>
-                        <Text>{'ID:' + params.id}</Text>
-                        <Text>{'Photo Url:' + params.url}</Text>
-                        <Text>{'Tag:' + params.tag}</Text>
+                        <Text>{'ID:' + this.props.id /*params.id*/}</Text>
+                        <Text>{'Photo Url:' + this.props.url /*params.url*/ }</Text>
+                        <Text>{'Tag:' + this.props.tag /*params.tag*/ }</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -30,12 +25,18 @@ export default class PhotoDetailsScreen extends React.Component {
                     <View style={{width: 50, height: 50, marginRight: 5}}>
                         <Button title = 'Like'
                                 onPress={()=> {
-                                    Alert.alert('Like!');
-                                    /*this.onLike(params.id)*/}}/>
+                                    Alert.alert('Like!')}}/>
                     </View>
                     <Text style={{paddingBottom: 15}}>
                         { 4 }
                     </Text>
+                </View>
+
+                <View style={{width: 80, height: 50, marginTop: 20}}>
+                    <Button
+                        onPress={Actions.homeScreen}
+                        title='Home screen'
+                    />
                 </View>
 
             </View>

@@ -1,58 +1,18 @@
 import React, { Component } from 'react';
-
-import  {DrawerNavigator}  from 'react-navigation';
-
 import { Button, Text, View, TouchableHighlight, Image, ListView,
     ActivityIndicator, TextInput, RefreshControl, AsyncStorage, Alert } from 'react-native';
 
 import { getMedia } from './InstagramPictureApi';
 import { fetchLikes } from './services/likeService';
 
-import MenuScreen from './MenuScreen';
-
-import NavigationBar from 'react-native-navigation-bar';
+import { Actions } from 'react-native-router-flux';
 
 import styles from '../styles/Styles';
 
 export default class HomeScreen extends React.Component {
-    static navigationOptions = {
-        //drawerLabel: 'Home',
-        title: `Home`,
-        /*headerRight: <Button
-            title='Menu'
-            onPress={() => alert('Pressed!')}
-            //onPress={() => this.props.navigation.navigate('Menu')}
-            //color='orange'
-        />,*/
-
-    /*    header: ({ state }) => ({
-            right: (
-                <TouchableHighlight
-                    onPress={state.params.onRightPressed}>
-                    <Image
-                        source={{uri:'https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png'}}
-                        style={styles.icon}
-                    />
-                </TouchableHighlight>
-            ),
-        }),*/
-
-        headerRight: <TouchableHighlight
-            /*onPress={state.params.onRightPressed}>*/
-            /*onPress={navigation('Menu')}>*/
-            /*onPress={() => this.props.navigation.navigate('Menu')}>*/
-            onPress={() => alert('Pressed!')}>
-            <Image
-                source={{uri:'https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png'}}
-                style={styles.icon}
-            />
-        </TouchableHighlight>
-    };
 
     constructor(props) {
         super(props);
-        //var navigator = this.props.navigator;
-        //navigator._onLeftNavButtonPressed = this.onRightPressed.bind(this)
 
         this.state = {
             isLoading: true,
@@ -63,12 +23,6 @@ export default class HomeScreen extends React.Component {
             dataSource: this.getDs([])
         }
     }
-
-    _onRightPressed() {
-        //console.log('Pressed left button')
-        alert('Button pressed!');
-    }
-
 
     onLike = (id) => {
         /*var currentObject = {};*/
@@ -175,10 +129,6 @@ export default class HomeScreen extends React.Component {
                     });
                 });
         });
-
-        this.props.navigation.setParams({
-            onRightPressed: this._onRightPressed.bind(this)
-        });
     }
 
     fetchImages = (tagName) => {
@@ -194,14 +144,12 @@ export default class HomeScreen extends React.Component {
             );
         }
 
-        const { navigate } = this.props.navigation;
         return (
-            <View style={{ paddingTop: 20}}>
+            <View style={{ paddingTop: 0}}>
 
                 <View style={styles.searchSection}>
                     <TouchableHighlight
-                        onPress={() => navigate('Menu')}>
-                        {/*onPress={() => this.props.navigation.navigate('DrawerOpen')}>*/}
+                        onPress={Actions.menuScreen}>
                         <Image
                             source={{uri:'https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png'}}
                             style={styles.icon}
@@ -221,6 +169,7 @@ export default class HomeScreen extends React.Component {
                     />
 
                 </View>
+
                 <ListView
                     dataSource = {this.state.dataSource}
                     enableEmptySections={true}
@@ -234,12 +183,16 @@ export default class HomeScreen extends React.Component {
                         <View>
                             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',}}>
                                 <TouchableHighlight
-                                    onPress={() => navigate('PhotoDetails', {
+                                   /* onPress={() => navigate('PhotoDetails', {
                                         id: rowData.caption.id,
                                         tag: rowData.caption.text,
                                         url: rowData.images.standard_resolution.url
-                                    })}>
-                                    <Image
+                                    })}>*/
+                                    /*onPress={() => console.log('click', rowData.caption)}>*/
+                                    onPress={() => Actions.photoDetailsScreen({id: rowData.caption.id,
+                                                                        tag: rowData.caption.text,
+                                                                        url: rowData.images.standard_resolution.url})}>
+                                <Image
                                         source={{uri:rowData.images.standard_resolution.url}}
                                         style={{width: 320, height: 320}}/>
                                 </TouchableHighlight>
