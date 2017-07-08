@@ -1,12 +1,12 @@
-import * as firebase from 'firebase';
+import * as firebaseConf from 'firebase';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyD9nnY60AoEyhw9EBTwby05RYTpD5ILO3U",
-    authDomain: "reactnativetest-64d44.firebaseapp.com",
-    databaseURL: "https://reactnativetest-64d44.firebaseio.com",
-    projectId: "reactnativetest-64d44",
-    storageBucket: "reactnativetest-64d44.appspot.com",
-    messagingSenderId: "1084468979936"
+    apiKey: "AIzaSyCrKNGwBPUo1diwd1wimrqoBnsF_vUmE7I",
+    authDomain: "react-native-test-d37ef.firebaseapp.com",
+    databaseURL: "https://react-native-test-d37ef.firebaseio.com",
+    projectId: "react-native-test-d37ef",
+    storageBucket: "",
+    messagingSenderId: "666752834987"
 };
 
-export default firebaseApp = firebase.initializeApp(firebaseConfig);
+export default firebase = firebaseConf.initializeApp(firebaseConfig);
