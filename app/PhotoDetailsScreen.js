@@ -7,6 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 
 import styles from '../styles/Styles';
+import Header from './Header';
 
 export default class PhotoDetailsScreen extends React.Component {   
 
@@ -28,6 +29,9 @@ componentDidMount() {
     render() {
         return (
             <View>
+
+                <Header />
+
                 <TouchableHighlight onPress={() => { Alert.alert('You tapped on photo')}}>
                     <View>
                         <Image
