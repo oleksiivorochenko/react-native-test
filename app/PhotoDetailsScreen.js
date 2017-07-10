@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, Text, View, TouchableHighlight, Image, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
+import Header from './Header';
+
 import styles from '../styles/Styles';
 
 export default class PhotoDetailsScreen extends React.Component {
@@ -10,6 +12,9 @@ export default class PhotoDetailsScreen extends React.Component {
 
         return (
             <View>
+
+                <Header />
+
                 <TouchableHighlight onPress={() => { Alert.alert('You tapped on photo')}}>
                     <View>
                         <Image

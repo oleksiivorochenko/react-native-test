@@ -12,7 +12,7 @@ export default class ReactNativeTest extends Component {
             <Router>
                 <Scene key="root">
                     <Scene key="homeScreen" component={HomeScreen} title="Home" initial={true} hideNavBar={true}/>
-                    <Scene key="photoDetailsScreen" component={PhotoDetailsScreen} title="Photo details" hideNavBar={false}/>
+                    <Scene key="photoDetailsScreen" component={PhotoDetailsScreen} title="Photo details" hideNavBar={true}/>
                     <Scene key="menuScreen" component={MenuScreen} direction="leftToRight" title="Menu" hideNavBar={false}/>
                     <Scene key="aboutScreen" component={AboutScreen} title="About" hideNavBar={true}/>
                 </Scene>
