@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import firebase from "./Global";
+import FCM from "react-native-fcm";
 
 import {
   Button,
@@ -34,6 +35,7 @@ export default class HomeScreen extends React.Component {
       isOpen: false,
       selectedItem: "About",
       refreshing: false,
+      fcm_token: "",
       likes: {},
       dataSource: this.getDs([])
     };
@@ -126,6 +128,11 @@ export default class HomeScreen extends React.Component {
   });
 
   componentDidMount() {
+    FCM.requestPermissions();
+    FCM.getFCMToken().then(token => {
+      this.setState({fcm_token:token});
+      //update your fcm token on server.
+    });
     this.fetchImages().then(response => {
       this.setState({
         isLoading: false,
@@ -164,7 +171,7 @@ this.logout();
       );
     }
 
-    if (!this.state.logged) {
+    /*if (!this.state.logged) {
       return (
         <View>
           <TextInput
@@ -196,7 +203,7 @@ this.logout();
           />
         </View>
       );
-    }
+    }*/
 
     return (
       <View style={{ paddingTop: 0 }}>
