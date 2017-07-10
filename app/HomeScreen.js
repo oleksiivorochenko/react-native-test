@@ -123,9 +123,9 @@ export default class HomeScreen extends React.Component {
     return ds.cloneWithRows(data);
   }
 
-  alerts = this.listenUserMobile("3333", like => {
+  /*alerts = this.listenUserMobile("3333", like => {
     Alert.alert(like);
-  });
+  });*/
 
   componentDidMount() {
     FCM.requestPermissions();
@@ -272,7 +272,7 @@ this.logout();
                 <Like
                   onPress={() => {
                     onLike(rowData.caption.id).then(newLikes => {
-                      this.setLike("3333", newLikes.toString());
+                      /*this.setLike("3333", newLikes.toString());*/
                       this.toggleLikes(rowData.caption.id, newLikes);
                     });
                   }}
