@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import { onLike } from '../services/likeService';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Button from 'react-native-button';
 
@@ -16,12 +17,13 @@ class Like extends Component {
     constructor(props){
         super(props)
     }
-    render = () => {
+    render = () => {        
         const { likes } = this.props;
-        return (
-            <TouchableOpacity style={{width:50}}
+        let name = likes === '0' ? 'heart-o' : 'heart';
+        return (           
+             <TouchableOpacity style={{width:50}}
                 onPress={this.props.onPress}>
-                <Text style={styles.headline}> Like {likes}</Text>
+                <Text><Icon name={name} size={20} color="#e55050" >{" "+likes}</Icon></Text>
             </TouchableOpacity>
         );
     }

@@ -14,7 +14,8 @@ import {
   TextInput,
   RefreshControl,
   AsyncStorage,
-  Alert
+  Alert,
+  Dimensions
 } from "react-native";
 
 import Like from "./components/like.custom";
@@ -25,6 +26,9 @@ import { fetchLikes, onLike } from "./services/likeService";
 import { Actions } from "react-native-router-flux";
 
 import styles from "../styles/Styles";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const window = Dimensions.get('window');
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -208,14 +212,8 @@ this.logout();
     return (
       <View style={{ paddingTop: 0 }}>
         <View style={styles.searchSection}>
-          <TouchableHighlight onPress={Actions.menuScreen}>
-            <Image
-              source={{
-                uri:
-                  "https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-512.png"
-              }}
-              style={styles.icon}
-            />
+          <TouchableHighlight onPress={Actions.menuScreen}>           
+            <Text><Icon name="bars" size={30} color="#383838" /></Text>
           </TouchableHighlight>
 
           <TextInput
@@ -230,7 +228,6 @@ this.logout();
             title="Search"
           />
         </View>
-
         <ListView
           dataSource={this.state.dataSource}
           enableEmptySections={true}
@@ -266,7 +263,8 @@ this.logout();
                 >
                   <Image
                     source={{ uri: rowData.images.standard_resolution.url }}
-                    style={{ width: 320, height: 320 }}
+                    style={{ width: window.width * 0.80, height: window.width * 0.80 }}
+                
                   />
                 </TouchableHighlight>
                 <Like

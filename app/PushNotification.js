@@ -44,7 +44,7 @@ export default class PushNotification extends Component {
       body: notif.body,
       priority: "high",
       click_action: notif.click_action,
-      show_in_foreground: false,
+      show_in_foreground: true,
       local: true
     });
   }
