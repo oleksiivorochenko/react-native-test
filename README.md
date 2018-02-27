@@ -2,6 +2,7 @@
 # **Support dGarson**
 
 ### Project structure
+https://github.com/avorochenko/react-native-test.wiki.git
 
 Open the folder "$_PROJECT_DIR/src".
 
